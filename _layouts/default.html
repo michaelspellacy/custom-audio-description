@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ site.lang }}">
+<head>
+	<meta charset="{{ site.charset }}">
+	<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">{% if page.noindex %}
+	<meta content="noindex, nofollow" name="robots">{% endif %}
+	<meta content="summary_large_image" name="twitter:card">
+	<meta content="@Spellacy" name="twitter:creator">{% if page.mf-photo %}
+	<meta content="{{ page.mf-photo }}" property="og:image">
+	<meta content="{{ page.mf-photo }}" name="twitter:image">{% else %}
+	<meta content="{{ site.author-image }}?s=600" name="twitter:image">
+	<meta content="{{ site.author-image }}?s=600" property="og:image">
+	<meta content="{{ site.author-image-alt }}" property="og:image:alt">{% endif %}{% if page.title != "" %}
+	<meta content="{{ page.title }}{{ page.metatitle }}" property="og:title">
+	<meta content="{{ page.title }}{{ page.metatitle }}" name="twitter:title">{% endif %}{% if page.description %}
+	<meta content="{{ page.description }}" name="description">
+	<meta content="{{ page.description }}" property="og:description">
+	<meta content="{{ page.description }}" name="twitter:description">{% elsif page.title != "" %}
+	<meta content="{{ page.content | markdownify | strip_html | truncatewords: 20 }}" name="description">
+	<meta content="{{ page.content | markdownify | strip_html | truncatewords: 20 }}" property="og:description">
+	<meta content="{{ page.content | markdownify | strip_html | truncatewords: 20 }}" name="twitter:description">{% endif %}
+	<meta content="{{ site.theme-color }}" name="theme-color">
+	<link href="/css/global.css" rel="stylesheet">{% if page.localcss %}
+	<link href="{{ page.localcss }}" rel="stylesheet">{% endif %}
+	<link href="/manifest.json" rel="manifest">{% if page.canonical %}
+	<link href="{{ page.canonical }}" rel="canonical">{% else %}
+	<link href="{{ page.url | replace: 'index.html','' | prepend: site.url}}" rel="canonical">{% endif %}
+	<link href="{{ site.author-image | replace: '.jpg', '.ico'}}?s=32" rel="icon">
+	<link href="/rss.xml" rel="alternate" title="{{ site.author }} - RSS Feed" type="application/rss+xml">
+	<link href="https://indieauth.com/auth" rel="authorization_endpoint">
+	<link href="https://tokens.indieauth.com/token" rel="token_endpoint">
+	<link href="https://michaelspellacy-com.herokuapp.com/micropub/main" rel="micropub">
+	<link href="https://aperture.p3k.io/microsub/367" rel="microsub">
+	<link href="https://webmention.herokuapp.com/api/webmention" rel="webmention">{% if page.metatitle %}
+	<title>{{ page.metatitle }} - {{ site.name }}</title>{% else %}
+	<title>{{ page.title }}{% if page.title != "" %} - {% endif %}{{ site.name }}</title>{% endif %}
+</head>
+
+<!--
+
+	Hello there! Come here my little friend. Don't be afraid.
+	It is nice to see somebody exploring the source code of a website.
+	If you are curious about any part of my site, feel free
+	to contact me. My email address is spell@spellacy.net
+
+-->
+
+<body id="{{ page.path | replace:'.html',''|  replace:'.md','' | replace:'_','' | replace: '/', '-'}}"{% if page.section %} class="{{ page.section }}"{% endif %}>
+
+	<div id="page">
+
+		<a href="#content" id="skip-nav">Skip to main content</a>
+
+		<a href="https://indieweb.org/Webmention-faq" id="webmentions-logo"><img src="/img/webmention.png" alt="This site uses Webmentions! Learn More!"></a>
+
+		<header id="banner"{% if page.theme == "minify" %}class="minify"{% endif %}>
+
+			<a class="h-card" href="{{site.url}}" rel="me">
+
+				<img src="{{ site.author-image }}?s=200" alt="{{ site.author }}">
+
+			</a>
+
+			<nav id="primary-navigation" aria-label="primary">
+
+				<ul>
+					<li><a href="/about-me/">About</a></li>
+					<li><a href="/articles/">Articles</a></li>
+					<li><a href="/bookmarks/">Bookmarks</a></li>
+					<li><a href="/notes/">Notes</a></li>
+				</ul>
+
+			</nav>
+
+		</header>
+
+		<main id="content">
+
+		{% if page.layout == "micropubpost" %}
+
+			<article class="h-entry">
+
+				{% if page.title != "" %}
+
+				<h1>{{page.title}}</h1>
+
+				{% endif %}
+
+				<p class="u-author h-card">
+
+					<img src="{{ site.author-image }}?s=50" class="u-photo" alt="">
+
+					Published by <a href="{{ site.url }}" class="u-url p-name">{{ site.author }} ({{ site.nickname }})</a> on <time class="dt-published" datetime="{{ page.date  | date: "%Y-%m-%d %H:%M" }}">{{ page.date | date: "%B %d, %Y" }}</time>
+
+				</p>
+
+				{% if page.mf-in-reply-to %}
+
+				<p class="reply-to">Reply to <a href="{{page.mf-in-reply-to}}" class="u-in-reply-to">{{page.mf-in-reply-to}}</a></p>
+
+				{% endif %}
+
+				{% if page.mf-bookmark-of %}
+
+				<p class="reply-to">Bookmark of <a href="{{page.mf-bookmark-of}}" class="u-bookmark-of">{{page.mf-bookmark-of}}</a></p>
+
+				{% endif %}
+
+				{% if page.mf-repost-of %}
+
+				<p class="reply-to">Repost of <a href="{{page.mf-repost-of}}" class="u-repost-of">{{page.mf-repost-of}}</a></p>
+
+				{% endif %}
+
+				{% if page.mf-like-of %}
+
+				<p class="reply-to"><span aria-hidden="true">❤️</span> Like of <a href="{{page.mf-like-of}}" class="u-like-of">{{page.mf-like-of}}</a></p>
+
+				{% endif %}
+
+				<div class="e-content">
+
+					{% if page.mf-photo %}
+
+					<figure>
+
+						<img src="{{page.mf-photo}}" alt="" class="post-img">
+
+					</figure>
+
+					<!-- figcaption></figcaption -->
+
+					{% endif %}
+
+					{{ content }}
+
+				</div>
+
+			</article>
+
+			<form method="post" class="webmention-send" action="https://telegraph.p3k.io/webmention">
+
+				<label for="source">Have a reply, or comment? Send your URL (<a href="/webmentions/">Learn More</a>):</label>
+				<input type="url" placeholder="https://your-site.com/your-reply/" id="source" name="source" required>
+				<input type="hidden" name="token" value="PSYxM7GRDQzEaN3La4Xuh2RzlVKoL2Gc">
+				<input type="hidden" name="target" value="{{site.url}}/{{page.slug}}/">
+				<button type="submit">Send Webmention</button>
+
+			</form>
+
+			<script id="webmention-hosted">
+
+			(function () {
+
+				var sn = document.createElement("script"), s = document.getElementsByTagName("script")[0], url;
+				url = document.querySelectorAll ? document.querySelectorAll("link[rel~=canonical]") : false;
+				url = url && url[0] ? url[0].href : false;
+				sn.async = true;
+				sn.src = "https://webmention.herokuapp.com/api/embed?url=" + encodeURIComponent(url || window.location);
+				s.parentNode.insertBefore(sn, s);
+
+			}());
+
+			</script>
+
+			{% else %}
+
+			{% if page.title %}
+
+			<h1>{{page.title}}</h1>
+
+			{% endif %}
+
+			{{ content }}
+
+			{% endif %}
+
+		</main>
+
+		<footer>
+
+			<ul id="social">
+				<li><a href="mailto:{{ site.email }}" rel="me"><i class="fas fa-envelope"></i> Email</a></li>
+				<li><a href="{{ site.social-github }}" rel="me"><i class="fab fa-github"></i> Github</a></li>
+				<li><a href="{{ site.social-instagram }}" rel="me"><i class="fab fa-instagram"></i> Instagram</a></li>
+				<li><a href="{{ site.social-linkedin }}" rel="me"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+				<li><a href="{{ site.social-mastodon }}" rel="me"><i class="fab fa-mastodon"></i> Mastodon</a></li>
+				<li><a href="/rss.xml"><i class="fas fa-rss-square"></i> RSS</a></li>
+				<li><a href="{{ site.social-twitter }}" rel="me"><i class="fab fa-twitter"></i> Twitter</a></li>
+			</ul>
+
+			<p><i class="fab fa-creative-commons"></i> <small>Except where otherwise noted, content on this site is licensed under <a href="{{ site.license }}" rel="license">Creative Commons Attribution 4.0 International</a>. The <a href="{{ site.sorce-code }}">source code</a> for this site may be found on Github.</small></p>
+
+			<nav id="indiewebring" aria-label="IndieWeb Webring">
+
+				<ul>
+					<li><a href="https://xn--sr8hvo.ws/%F0%9F%8D%BC%F0%9F%88%B2%F0%9F%91%A3/previous" aria-label="Previous Website">&#8592;</a></li>
+					<li><a href="https://xn--sr8hvo.ws/" aria-label="An IndieWeb Webring">💍</a></li>
+					<li><a href="https://xn--sr8hvo.ws/%F0%9F%8D%BC%F0%9F%88%B2%F0%9F%91%A3/next" aria-label="Next Website">&#8594;</a></li>
+				</ul>
+
+			</nav>
+
+			<p><small>How's my coding? Feel free to <a href="mailto:{{ site.email }}">contact me</a> if you spot any issues with my site. You can even <a href="https://github.com/michaelspellacy/michaelspellacy.github.io/issues">open an issue</a> on Github.</small></p>
+
+		</footer>
+
+	</div><!--/#page-->
+
+	<script src="/js/global.js"></script>{% if page.localjs %}
+	<script src="{{ page.localjs }}"></script>{% endif %}
+
+</body>
+</html>
